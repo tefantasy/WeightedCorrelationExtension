@@ -25,7 +25,7 @@ The modules of `WeightedCorrelation` and `WeightedCorrelationLayerExtension` in 
 
 ## Performance
 
-Compared with weighted correlation layer implemented in pure PyTorch API, this CUDA implementation significantly reduces GPU memory consumption. 
+Compared with weighted correlation layer [implemented in pure PyTorch API](https://github.com/tefantasy/CorrNet), this CUDA implementation significantly reduces GPU memory consumption. 
 
 Speed is approximately the same as PyTorch API implementation when clip length L=32. Higher relative speed is expected with smaller clip length. 
 
