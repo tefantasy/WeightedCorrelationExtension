@@ -1,5 +1,6 @@
 #include <torch/extension.h>
 
+#include <c10/cuda/CUDAGuard.h>
 #include <vector>
 
 
@@ -31,6 +32,7 @@ torch::Tensor weighted_corr_forward(
     CHECK_CUDA(input1);
     CHECK_CUDA(input2);
     CHECK_CUDA(weights);
+    const at::cuda::OptionalCUDAGuard device_guard(device_of(input1));
 
     return weighted_corr_cuda_forward(
         input1, input2, weights, 
@@ -46,6 +48,7 @@ std::vector<torch::Tensor> weighted_corr_backward(
     CHECK_CUDA(input1);
     CHECK_CUDA(input2);
     CHECK_CUDA(weights);
+    const at::cuda::OptionalCUDAGuard device_guard(device_of(input1));
 
     return weighted_corr_cuda_backward(
         input1, input2, weights, grad_output, 
