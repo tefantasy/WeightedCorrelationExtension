@@ -4,7 +4,7 @@ This project provides a rudimentary PyTorch CUDA extension implementation of wei
 ## Install
 
 Make sure you have installed the following prerequisites:
-* torch>=1.3
+* torch>=1.3, <=1.6
 * gcc>=4.9 (and a maximum version restriction which varies depending on your CUDA version)
 * nvcc
 
