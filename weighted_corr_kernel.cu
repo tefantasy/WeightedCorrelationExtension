@@ -19,7 +19,7 @@ using namespace torch;
 
 #define MAX_KERNEL_SIZE 15
 
-namespace {
+namespace wcorr {
 template <typename scalar_t>
 __global__ void weighted_corr_forward_kernel(
         const TensorAcc4R in1, const TensorAcc4R in2,
@@ -261,7 +261,7 @@ Tensor weighted_corr_cuda_forward(
         TensorAcc4R output_acc = output.packed_accessor32<scalar_t,4,RestrictPtrTraits>();
 
         for (int b = 0; b < batch_size; ++b) {
-            weighted_corr_forward_kernel<scalar_t><<<blocks, threads>>>(
+            wcorr::weighted_corr_forward_kernel<scalar_t><<<blocks, threads>>>(
                 cont_input1_acc, cont_input2_acc, cont_weights_acc, output_acc, 
                 in_channel, filter_size, dilation, num_groups, b
             );
@@ -305,14 +305,14 @@ std::vector<Tensor> weighted_corr_cuda_backward(
         TensorAcc4R grad_output_acc = grad_output.packed_accessor32<scalar_t,4,RestrictPtrTraits>();
 
         for (int b = 0; b < batch_size; ++b) {
-            weighted_corr_backward_in12_kernel<scalar_t><<<blocks_in12, threads_in12>>>(
+            wcorr::weighted_corr_backward_in12_kernel<scalar_t><<<blocks_in12, threads_in12>>>(
                 cont_input1_acc, cont_input2_acc, cont_weights_acc, grad_output_acc, 
                 grad_input1_acc, grad_input2_acc, 
                 in_channel, filter_size, dilation, num_groups, b
             );
         }
 
-        weighted_corr_backward_weights_kernel<scalar_t><<<blocks_w, threads_w>>>(
+        wcorr::weighted_corr_backward_weights_kernel<scalar_t><<<blocks_w, threads_w>>>(
             cont_input1_acc, cont_input2_acc, cont_weights_acc, grad_output_acc, 
             grad_weights_acc, 
             in_channel, filter_size, dilation, num_groups
