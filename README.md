@@ -12,10 +12,11 @@ Install this project in development mode by
 
 ``pip3 install -e <path_to_project>``
 
-## Restrictions
+## Limitations
 
 Up to now,
-* Only CUDA mode is implemented. CPU mode is not supported yet.
+* Only CUDA mode is implemented. 
+* Only support input tensors with equal spatial height and width. 
 * The kernel size K must be no greater than 15. 
 * For `WeightedCorrelationLayerExtension` (i.e., perform correlation operation for each two consecutive sampled frames as in the paper), correlation operations are called iteratively in PyTorch API, not optimized by CUDA. So, efficiency might get worse with long input sequence. 
 
